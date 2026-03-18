@@ -10,8 +10,13 @@ import {
   type Infer as __Infer,
 } from "spacetimedb";
 
-export const Person = __t.object("Person", {
-  name: __t.string(),
+export const User = __t.object("User", {
+  identity: __t.identity(),
+  username: __t.string(),
+  email: __t.string(),
+  registered: __t.bool(),
+  createdAt: __t.timestamp(),
+  modifiedAt: __t.timestamp(),
 });
-export type Person = __Infer<typeof Person>;
+export type User = __Infer<typeof User>;
 
