@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import "./App.css";
 import MainPage from "./MainPage.tsx";
 
 import { Identity } from "spacetimedb";
