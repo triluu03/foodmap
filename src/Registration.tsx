@@ -1,9 +1,9 @@
 import { useState } from "react";
-import "./App.css";
 import "./Registration.css";
 
 import { tables, reducers } from "./module_bindings";
 import { useReducer, useTable, useSpacetimeDB } from "spacetimedb/react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function Registration() {
   const [username, setUsername] = useState("");
@@ -28,6 +28,8 @@ function Registration() {
     setUsername("");
     setEmail("");
   };
+
+  const { logout } = useAuth0();
 
   return (
     <div className="registration-container">
@@ -69,6 +71,14 @@ function Registration() {
           disabled={isSubmitting}
         >
           {isSubmitting ? "Creating Account..." : "Sign Up"}
+        </button>
+        <button
+          className="registration-button"
+          onClick={() =>
+            logout({ logoutParams: { returnTo: window.location.origin } })
+          }
+        >
+          Use a different account
         </button>
       </form>
     </div>

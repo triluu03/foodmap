@@ -3,9 +3,10 @@ import { useReducer, useTable, useSpacetimeDB } from "spacetimedb/react";
 import { tables, reducers } from "./module_bindings";
 
 import Registration from "./Registration";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function MainPage() {
-  const [count, setCount] = useState(0);
+  const { logout } = useAuth0();
 
   const { identity, isActive: connected } = useSpacetimeDB();
   console.log("Identity:", identity);
@@ -24,6 +25,13 @@ function MainPage() {
     return (
       <div>
         <h1>Welcome to Foodmap</h1>
+        <button
+          onClick={() =>
+            logout({ logoutParams: { returnTo: window.location.origin } })
+          }
+        >
+          Logout
+        </button>
       </div>
     );
   } else {
