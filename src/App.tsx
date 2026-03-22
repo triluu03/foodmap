@@ -1,5 +1,9 @@
 import { useMemo } from "react";
-import MainPage from "./MainPage.tsx";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import MainPage from "./components/MainPage.tsx";
+import UserInfo from "./components/UserInfo.tsx";
+import Layout from "./components/layout/Layout";
 
 import { Identity } from "spacetimedb";
 import { SpacetimeDBProvider } from "spacetimedb/react";
@@ -8,14 +12,8 @@ import { useIdToken } from "./AutoLogin.tsx";
 
 const DB_HOST = import.meta.env.VITE_SPACETIMEDB_HOST ?? "ws://localhost:3000";
 const DB_NAME = import.meta.env.VITE_SPACETIMEDB_DB_NAME ?? "foodmap-db";
-const DB_TOKEN_KEY = `${DB_HOST}/${DB_NAME}/auth_token`;
 
 const onConnect = (_conn: DbConnection, identity: Identity) => {
-  // localStorage.setItem(DB_TOKEN_KEY, token);
-  // console.log(
-  //   "Connected to SpacetimeDB with identity:",
-  //   identity.toHexString(),
-  // );
   console.log(
     "Connected to SpacetimeDB with identity:",
     identity.toHexString(),
@@ -44,9 +42,16 @@ function App() {
   }, [idToken]);
 
   return (
-    <SpacetimeDBProvider connectionBuilder={connectionBuilder}>
-      <MainPage />
-    </SpacetimeDBProvider>
+    <BrowserRouter>
+      <SpacetimeDBProvider connectionBuilder={connectionBuilder}>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/user/:id" element={<UserInfo />} />
+          </Route>
+        </Routes>
+      </SpacetimeDBProvider>
+    </BrowserRouter>
   );
 }
 
