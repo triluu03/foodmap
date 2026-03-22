@@ -1,4 +1,9 @@
-function UserInfo() {
+import { useParams } from "react-router-dom";
+
+function OtherUserInfo() {
+  const { id } = useParams();
+  console.log("User ID: ", id);
+
   return (
     <div className="p-8">
       <h1 className="text-2xl font-bold mb-4">User Information</h1>
@@ -9,4 +14,4 @@ function UserInfo() {
   );
 }
 
-export default UserInfo;
+export default OtherUserInfo;

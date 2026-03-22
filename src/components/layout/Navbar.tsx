@@ -2,7 +2,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 
 export function Navbar() {
-  const { user, isAuthenticated, isLoading, logout, loginWithRedirect } = useAuth0();
+  const { user, isAuthenticated, isLoading, logout, loginWithRedirect } =
+    useAuth0();
 
   return (
     <nav className="bg-white shadow-sm">
@@ -20,14 +21,16 @@ export function Navbar() {
             ) : isAuthenticated ? (
               <>
                 <Link
-                  to={`/user/${user?.sub}`}
+                  to="/user"
                   className="text-sm text-gray-700 hover:text-blue-600"
                 >
                   {user?.name || user?.email}
                 </Link>
                 <button
                   onClick={() =>
-                    logout({ logoutParams: { returnTo: window.location.origin } })
+                    logout({
+                      logoutParams: { returnTo: window.location.origin },
+                    })
                   }
                   className="text-sm text-red-600 hover:text-red-800 hover:cursor-pointer"
                 >

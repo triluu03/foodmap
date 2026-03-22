@@ -2,8 +2,9 @@ import { useMemo } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainPage from "./components/MainPage.tsx";
-import UserInfo from "./components/UserInfo.tsx";
+import LoggedInUserInfo from "./components/LoggedInUserInfo.tsx";
 import Layout from "./components/layout/Layout";
+import OtherUserInfo from "./components/OtherUserInfo.tsx";
 
 import { Identity } from "spacetimedb";
 import { SpacetimeDBProvider } from "spacetimedb/react";
@@ -47,7 +48,8 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<MainPage />} />
-            <Route path="/user/:id" element={<UserInfo />} />
+            <Route path="/user" element={<LoggedInUserInfo />} />
+            <Route path="/user/:id" element={<OtherUserInfo />} />
           </Route>
         </Routes>
       </SpacetimeDBProvider>
