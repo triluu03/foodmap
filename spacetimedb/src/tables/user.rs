@@ -1,10 +1,13 @@
+//! User table.
 use spacetimedb::{Identity, Timestamp, ViewContext, table, view};
 
 #[table(accessor = user)]
 pub struct User {
     #[primary_key]
     pub identity: Identity,
+    #[unique]
     username: String,
+    #[unique]
     email: String,
     registered: bool,
     created_at: Timestamp,
@@ -25,33 +28,26 @@ impl User {
     }
 
     /// Register an user with username and email.
-    pub fn register(self, username: String, email: String, now: Timestamp) -> Self {
-        let username = username.trim().to_string();
-        let email = email.trim().to_string();
-        User {
-            username,
-            email,
-            registered: true,
-            modified_at: now,
-            ..self
-        }
+    pub fn register(mut self, username: String, email: String, now: Timestamp) -> Self {
+        self.username = username.trim().to_string();
+        self.email = email.trim().to_string();
+        self.modified_at = now;
+
+        self
     }
 
     /// Change user information
     pub fn change_info(
-        self,
+        mut self,
         username: Option<String>,
         email: Option<String>,
         now: Timestamp,
     ) -> Self {
-        let username = username.unwrap_or(self.username);
-        let email = email.unwrap_or(self.email);
-        User {
-            username,
-            email,
-            modified_at: now,
-            ..self
-        }
+        self.username = username.unwrap_or(self.username);
+        self.email = email.unwrap_or(self.email);
+        self.modified_at = now;
+
+        self
     }
 
     /// Check whether the user needs registration
