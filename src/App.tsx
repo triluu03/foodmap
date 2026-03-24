@@ -5,6 +5,7 @@ import MainPage from "./components/MainPage.tsx";
 import LoggedInUserInfo from "./components/LoggedInUserInfo.tsx";
 import Layout from "./components/layout/Layout";
 import OtherUserInfo from "./components/OtherUserInfo.tsx";
+import UserList from "./components/UserList.tsx";
 
 import { Identity } from "spacetimedb";
 import { SpacetimeDBProvider } from "spacetimedb/react";
@@ -49,6 +50,7 @@ function App() {
           <Route element={<Layout />}>
             <Route path="/" element={<MainPage />} />
             <Route path="/user" element={<LoggedInUserInfo />} />
+            <Route path="/userlist" element={<UserList />} />
             <Route path="/user/:id" element={<OtherUserInfo />} />
           </Route>
         </Routes>

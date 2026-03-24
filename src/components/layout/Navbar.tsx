@@ -21,6 +21,12 @@ export function Navbar() {
             ) : isAuthenticated ? (
               <>
                 <Link
+                  to="/userlist"
+                  className="text-sm text-gray-700 hover:text-blue-600"
+                >
+                  Users
+                </Link>
+                <Link
                   to="/user"
                   className="text-sm text-gray-700 hover:text-blue-600"
                 >

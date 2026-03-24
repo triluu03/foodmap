@@ -1,14 +1,103 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useSpacetimeDB, useTable, useReducer } from "spacetimedb/react";
 import { tables, reducers } from "../module_bindings";
 
 import Registration from "./Registration";
+import type { Identity } from "spacetimedb";
+
+interface User {
+  identity: Identity;
+  username: String;
+  email: String;
+}
+interface FriendListProps {
+  friends: User[];
+}
+
+interface FriendRequest {
+  senderId: Identity;
+  senderUsername: String | undefined;
+}
+interface FriendRequestsProps {
+  requests: FriendRequest[];
+}
+
+function FriendList({ friends }: FriendListProps) {
+  return (
+    <div className="mt-6">
+      <h1 className="text-2xl font-bold mb-4">Friends</h1>
+      <div className="bg-white shadow rounded-lg p-6">
+        <ul className="space-y-2">
+          {friends.map((user) => (
+            <li key={user.identity.toHexString()}>
+              <Link
+                to={`/user/${user.identity.toHexString()}`}
+                className="text-orange-600 hover:text-orange-700 hover:underline"
+              >
+                {user.username ?? "Unnamed"}
+              </Link>
+              <button className="ml-5 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                Remove Friend
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function FriendRequests({ requests }: FriendRequestsProps) {
+  return (
+    <div className="mt-6">
+      <h1 className="text-2xl font-bold mb-4">Friend Requests</h1>
+      <div className="bg-white shadow rounded-lg p-6">
+        <ul className="space-y-2">
+          {requests.map((request) => (
+            <li key={request.senderId.toHexString()}>
+              <Link
+                to={`/user/${request.senderId.toHexString()}`}
+                className="text-orange-600 hover:text-orange-700 hover:underline"
+              >
+                {request.senderUsername ?? "Unnamed"}
+              </Link>
+              <button className="ml-5 bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                Accept
+              </button>
+              <button className="ml-2 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+                Decline
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
 
 function LoggedInUserInfo() {
   const { identity, isActive: connected } = useSpacetimeDB();
 
+  const [users] = useTable(tables.user.where((r) => r.registered.eq(true)));
   const [info] = useTable(tables.user_info);
   const loggedInUserInfo = info[0];
+
+  const [friendList] = useTable(tables.friend_list);
+  const friends = friendList.map((user) => ({
+    identity: user.identity,
+    username: user.username,
+    email: user.email,
+  }));
+
+  const [allPendingReceivedRequests] = useTable(
+    tables.all_pending_received_requests,
+  );
+  const friendRequests = allPendingReceivedRequests.map((request) => ({
+    senderId: request.senderId,
+    senderUsername: users.find((user) => user.identity.equals(request.senderId))
+      ?.username,
+  }));
 
   const changeUserInfo = useReducer(reducers.changeUserInfo);
 
@@ -141,6 +230,8 @@ function LoggedInUserInfo() {
           </button>
         </div>
       </div>
+      <FriendList friends={friends} />
+      <FriendRequests requests={friendRequests} />
     </div>
   );
 }
