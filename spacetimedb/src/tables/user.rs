@@ -1,7 +1,8 @@
 //! User table.
-use spacetimedb::{Identity, Timestamp, ViewContext, table, view};
+use spacetimedb::{table, Identity, Timestamp};
 
-#[table(accessor = user)]
+#[derive(Debug, Clone)]
+#[table(accessor = user, public)]
 pub struct User {
     #[primary_key]
     pub identity: Identity,
@@ -31,6 +32,7 @@ impl User {
     pub fn register(mut self, username: String, email: String, now: Timestamp) -> Self {
         self.username = username.trim().to_string();
         self.email = email.trim().to_string();
+        self.registered = true;
         self.modified_at = now;
 
         self
@@ -54,10 +56,4 @@ impl User {
     pub fn require_registration(&self) -> bool {
         !self.registered
     }
-}
-
-/// Get the user info of the current sender.
-#[view(accessor = user_info, public)]
-fn user_info(ctx: &ViewContext) -> Option<User> {
-    ctx.db.user().identity().find(ctx.sender())
 }

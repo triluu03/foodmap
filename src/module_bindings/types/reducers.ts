@@ -6,9 +6,23 @@
 import { type Infer as __Infer } from "spacetimedb";
 
 // Import all reducer arg schemas
+import AcceptFriendRequestReducer from "../accept_friend_request_reducer";
+import AddNewRatingReducer from "../add_new_rating_reducer";
+import CancelFriendRequestReducer from "../cancel_friend_request_reducer";
 import ChangeUserInfoReducer from "../change_user_info_reducer";
+import DeclineFriendRequestReducer from "../decline_friend_request_reducer";
+import ModifyARatingReducer from "../modify_a_rating_reducer";
 import RegisterUserReducer from "../register_user_reducer";
+import RemoveFriendReducer from "../remove_friend_reducer";
+import SendFriendRequestReducer from "../send_friend_request_reducer";
 
+export type AcceptFriendRequestParams = __Infer<typeof AcceptFriendRequestReducer>;
+export type AddNewRatingParams = __Infer<typeof AddNewRatingReducer>;
+export type CancelFriendRequestParams = __Infer<typeof CancelFriendRequestReducer>;
 export type ChangeUserInfoParams = __Infer<typeof ChangeUserInfoReducer>;
+export type DeclineFriendRequestParams = __Infer<typeof DeclineFriendRequestReducer>;
+export type ModifyARatingParams = __Infer<typeof ModifyARatingReducer>;
 export type RegisterUserParams = __Infer<typeof RegisterUserReducer>;
+export type RemoveFriendParams = __Infer<typeof RemoveFriendReducer>;
+export type SendFriendRequestParams = __Infer<typeof SendFriendRequestReducer>;
 

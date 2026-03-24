@@ -34,18 +34,84 @@ import {
 } from "spacetimedb";
 
 // Import all reducer arg schemas
+import AcceptFriendRequestReducer from "./accept_friend_request_reducer";
+import AddNewRatingReducer from "./add_new_rating_reducer";
+import CancelFriendRequestReducer from "./cancel_friend_request_reducer";
 import ChangeUserInfoReducer from "./change_user_info_reducer";
+import DeclineFriendRequestReducer from "./decline_friend_request_reducer";
+import ModifyARatingReducer from "./modify_a_rating_reducer";
 import RegisterUserReducer from "./register_user_reducer";
+import RemoveFriendReducer from "./remove_friend_reducer";
+import SendFriendRequestReducer from "./send_friend_request_reducer";
 
 // Import all procedure arg schemas
 
 // Import all table schema definitions
+import AllPendingReceivedRequestsRow from "./all_pending_received_requests_table";
+import AllPendingSentRequestsRow from "./all_pending_sent_requests_table";
+import FoodRatingRow from "./food_rating_table";
+import FriendListRow from "./friend_list_table";
+import UserRow from "./user_table";
 import UserInfoRow from "./user_info_table";
 
 /** Type-only namespace exports for generated type groups. */
 
 /** The schema information for all tables in this module. This is defined the same was as the tables would have been defined in the server. */
 const tablesSchema = __schema({
+  food_rating: __table({
+    name: 'food_rating',
+    indexes: [
+      { accessor: 'id', name: 'food_rating_id_idx_btree', algorithm: 'btree', columns: [
+        'id',
+      ] },
+      { accessor: 'user_id', name: 'food_rating_user_id_idx_btree', algorithm: 'btree', columns: [
+        'userId',
+      ] },
+    ],
+    constraints: [
+      { name: 'food_rating_id_key', constraint: 'unique', columns: ['id'] },
+    ],
+  }, FoodRatingRow),
+  user: __table({
+    name: 'user',
+    indexes: [
+      { accessor: 'email', name: 'user_email_idx_btree', algorithm: 'btree', columns: [
+        'email',
+      ] },
+      { accessor: 'identity', name: 'user_identity_idx_btree', algorithm: 'btree', columns: [
+        'identity',
+      ] },
+      { accessor: 'username', name: 'user_username_idx_btree', algorithm: 'btree', columns: [
+        'username',
+      ] },
+    ],
+    constraints: [
+      { name: 'user_email_key', constraint: 'unique', columns: ['email'] },
+      { name: 'user_identity_key', constraint: 'unique', columns: ['identity'] },
+      { name: 'user_username_key', constraint: 'unique', columns: ['username'] },
+    ],
+  }, UserRow),
+  all_pending_received_requests: __table({
+    name: 'all_pending_received_requests',
+    indexes: [
+    ],
+    constraints: [
+    ],
+  }, AllPendingReceivedRequestsRow),
+  all_pending_sent_requests: __table({
+    name: 'all_pending_sent_requests',
+    indexes: [
+    ],
+    constraints: [
+    ],
+  }, AllPendingSentRequestsRow),
+  friend_list: __table({
+    name: 'friend_list',
+    indexes: [
+    ],
+    constraints: [
+    ],
+  }, FriendListRow),
   user_info: __table({
     name: 'user_info',
     indexes: [
@@ -57,8 +123,15 @@ const tablesSchema = __schema({
 
 /** The schema information for all reducers in this module. This is defined the same way as the reducers would have been defined in the server, except the body of the reducer is omitted in code generation. */
 const reducersSchema = __reducers(
+  __reducerSchema("accept_friend_request", AcceptFriendRequestReducer),
+  __reducerSchema("add_new_rating", AddNewRatingReducer),
+  __reducerSchema("cancel_friend_request", CancelFriendRequestReducer),
   __reducerSchema("change_user_info", ChangeUserInfoReducer),
+  __reducerSchema("decline_friend_request", DeclineFriendRequestReducer),
+  __reducerSchema("modify_a_rating", ModifyARatingReducer),
   __reducerSchema("register_user", RegisterUserReducer),
+  __reducerSchema("remove_friend", RemoveFriendReducer),
+  __reducerSchema("send_friend_request", SendFriendRequestReducer),
 );
 
 /** The schema information for all procedures in this module. This is defined the same way as the procedures would have been defined in the server. */

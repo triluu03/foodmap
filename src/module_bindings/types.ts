@@ -10,6 +10,55 @@ import {
   type Infer as __Infer,
 } from "spacetimedb";
 
+export const FoodRating = __t.object("FoodRating", {
+  id: __t.u64(),
+  userId: __t.identity(),
+  longitude: __t.f64(),
+  latitude: __t.f64(),
+  get rating() {
+    return Rating;
+  },
+  createdAt: __t.timestamp(),
+});
+export type FoodRating = __Infer<typeof FoodRating>;
+
+export const FriendRequest = __t.object("FriendRequest", {
+  id: __t.u64(),
+  senderId: __t.identity(),
+  receiverId: __t.identity(),
+  get status() {
+    return FriendRequestStatus;
+  },
+  createdAt: __t.timestamp(),
+});
+export type FriendRequest = __Infer<typeof FriendRequest>;
+
+// The tagged union or sum type for the algebraic type `FriendRequestStatus`.
+export const FriendRequestStatus = __t.enum("FriendRequestStatus", {
+  Accepted: __t.unit(),
+  Pending: __t.unit(),
+  Declined: __t.unit(),
+});
+export type FriendRequestStatus = __Infer<typeof FriendRequestStatus>;
+
+export const FriendShip = __t.object("FriendShip", {
+  id: __t.u64(),
+  userAId: __t.identity(),
+  userBId: __t.identity(),
+  createdAt: __t.timestamp(),
+});
+export type FriendShip = __Infer<typeof FriendShip>;
+
+// The tagged union or sum type for the algebraic type `Rating`.
+export const Rating = __t.enum("Rating", {
+  One: __t.unit(),
+  Two: __t.unit(),
+  Three: __t.unit(),
+  Four: __t.unit(),
+  Five: __t.unit(),
+});
+export type Rating = __Infer<typeof Rating>;
+
 export const User = __t.object("User", {
   identity: __t.identity(),
   username: __t.string(),
