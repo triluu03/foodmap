@@ -1,5 +1,5 @@
 //! User table.
-use spacetimedb::{table, Identity, Timestamp};
+use spacetimedb::{table, view, Identity, Timestamp, ViewContext};
 
 #[derive(Debug, Clone)]
 #[table(accessor = user, public)]
@@ -56,4 +56,10 @@ impl User {
     pub fn require_registration(&self) -> bool {
         !self.registered
     }
+}
+
+/// Get the user info of the current sender.
+#[view(accessor = user_info, public)]
+fn user_info(ctx: &ViewContext) -> Option<User> {
+    ctx.db.user().identity().find(ctx.sender())
 }

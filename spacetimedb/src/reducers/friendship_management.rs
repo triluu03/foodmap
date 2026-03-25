@@ -1,7 +1,7 @@
 //! Friendship management reducers.
 
-use crate::tables::{friendship::*, user::*};
-use spacetimedb::{reducer, view, Identity, ReducerContext, Table, ViewContext};
+use crate::tables::friendship::*;
+use spacetimedb::{reducer, Identity, ReducerContext, Table};
 
 fn ordered_pair(user_a_id: Identity, user_b_id: Identity) -> (Identity, Identity) {
     if user_a_id < user_b_id {
@@ -115,52 +115,4 @@ pub fn remove_friend(ctx: &ReducerContext, friend_user_id: Identity) -> Result<(
     ctx.db.friendship().id().delete(friendship.id);
 
     Ok(())
-}
-
-#[view(accessor = friend_list, public)]
-pub fn friend_list(ctx: &ViewContext) -> Vec<User> {
-    let sender = ctx.sender();
-
-    let mut friendship_a_list: Vec<User> = ctx
-        .db
-        .friendship()
-        .user_a_id()
-        .filter(sender)
-        // TODO: address the unwrap below
-        .map(|r| ctx.db.user().identity().find(r.user_b_id).unwrap())
-        .collect();
-
-    let friendship_b_list: Vec<User> = ctx
-        .db
-        .friendship()
-        .user_b_id()
-        .filter(sender)
-        // TODO: address the unwrap below
-        .map(|r| ctx.db.user().identity().find(r.user_a_id).unwrap())
-        .collect();
-
-    friendship_a_list.extend(friendship_b_list);
-    friendship_a_list
-}
-
-#[view(accessor = all_pending_sent_requests, public)]
-pub fn have_pending_sent_request(ctx: &ViewContext) -> Vec<FriendRequest> {
-    let sender = ctx.sender();
-    ctx.db
-        .friend_request()
-        .sender_id()
-        .filter(sender)
-        .filter(|row| row.status == FriendRequestStatus::Pending)
-        .collect()
-}
-
-#[view(accessor = all_pending_received_requests, public)]
-pub fn have_pending_received_request(ctx: &ViewContext) -> Vec<FriendRequest> {
-    let sender = ctx.sender();
-    ctx.db
-        .friend_request()
-        .receiver_id()
-        .filter(sender)
-        .filter(|row| row.status == FriendRequestStatus::Pending)
-        .collect()
 }

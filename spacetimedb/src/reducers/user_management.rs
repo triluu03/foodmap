@@ -1,7 +1,7 @@
 //! User management reducers.
 
 use crate::tables::user::*;
-use spacetimedb::{reducer, view, ReducerContext, Table, ViewContext};
+use spacetimedb::{reducer, ReducerContext, Table};
 
 /// Register a new user to the database.
 ///
@@ -53,10 +53,4 @@ pub fn change_user_info(
 
     ctx.db.user().identity().update(updated_user);
     Ok(())
-}
-
-/// Get the user info of the current sender.
-#[view(accessor = user_info, public)]
-fn user_info(ctx: &ViewContext) -> Option<User> {
-    ctx.db.user().identity().find(ctx.sender())
 }
