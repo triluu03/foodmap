@@ -37,9 +37,6 @@ function FriendList({ friends }: FriendListProps) {
               >
                 {user.username ?? "Unnamed"}
               </Link>
-              <button className="ml-5 bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                Remove Friend
-              </button>
             </li>
           ))}
         </ul>
@@ -62,12 +59,6 @@ function FriendRequests({ requests }: FriendRequestsProps) {
               >
                 {request.senderUsername ?? "Unnamed"}
               </Link>
-              <button className="ml-5 bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                Accept
-              </button>
-              <button className="ml-2 bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-                Decline
-              </button>
             </li>
           ))}
         </ul>
@@ -77,7 +68,7 @@ function FriendRequests({ requests }: FriendRequestsProps) {
 }
 
 function LoggedInUserInfo() {
-  const { identity, isActive: connected } = useSpacetimeDB();
+  const { isActive: connected } = useSpacetimeDB();
 
   const [users] = useTable(tables.user.where((r) => r.registered.eq(true)));
   const [info] = useTable(tables.user_info);
