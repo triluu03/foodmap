@@ -1,7 +1,7 @@
 //! Reducers for food-rating.
 
 use crate::tables::food_rating::*;
-use spacetimedb::{ReducerContext, Table, reducer};
+use spacetimedb::{reducer, ReducerContext, Table};
 
 #[reducer]
 pub fn add_new_rating(

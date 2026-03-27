@@ -1,6 +1,8 @@
 //! Food-rating table.
 
-use spacetimedb::{table, Identity, SpacetimeType, Timestamp};
+use spacetimedb::{table, view, Identity, SpacetimeType, Timestamp, ViewContext};
+
+use crate::tables::friendship::friend_list;
 
 #[derive(SpacetimeType, Debug, Clone, Copy)]
 pub enum Rating {
@@ -11,7 +13,7 @@ pub enum Rating {
     Five,
 }
 
-#[table(accessor = food_rating, public)]
+#[table(accessor = food_rating)]
 pub struct FoodRating {
     #[primary_key]
     #[auto_inc]
@@ -48,4 +50,20 @@ impl FoodRating {
         self.rating = new_rating;
         self
     }
+}
+
+#[view(accessor = all_ratings, public)]
+pub fn all_ratings(ctx: &ViewContext) -> Vec<FoodRating> {
+    let sender = ctx.sender();
+
+    ctx.db.food_rating().user_id().filter(sender).collect()
+}
+
+#[view(accessor = all_friend_ratings, public)]
+pub fn all_friend_ratings(ctx: &ViewContext) -> Vec<FoodRating> {
+    let all_friends = friend_list(ctx);
+    all_friends
+        .iter()
+        .flat_map(|user| ctx.db.food_rating().user_id().filter(user.identity))
+        .collect()
 }

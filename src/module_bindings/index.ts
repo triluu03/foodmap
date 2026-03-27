@@ -47,9 +47,10 @@ import SendFriendRequestReducer from "./send_friend_request_reducer";
 // Import all procedure arg schemas
 
 // Import all table schema definitions
+import AllFriendRatingsRow from "./all_friend_ratings_table";
 import AllPendingReceivedRequestsRow from "./all_pending_received_requests_table";
 import AllPendingSentRequestsRow from "./all_pending_sent_requests_table";
-import FoodRatingRow from "./food_rating_table";
+import AllRatingsRow from "./all_ratings_table";
 import FriendListRow from "./friend_list_table";
 import UserRow from "./user_table";
 import UserInfoRow from "./user_info_table";
@@ -58,20 +59,6 @@ import UserInfoRow from "./user_info_table";
 
 /** The schema information for all tables in this module. This is defined the same was as the tables would have been defined in the server. */
 const tablesSchema = __schema({
-  food_rating: __table({
-    name: 'food_rating',
-    indexes: [
-      { accessor: 'id', name: 'food_rating_id_idx_btree', algorithm: 'btree', columns: [
-        'id',
-      ] },
-      { accessor: 'user_id', name: 'food_rating_user_id_idx_btree', algorithm: 'btree', columns: [
-        'userId',
-      ] },
-    ],
-    constraints: [
-      { name: 'food_rating_id_key', constraint: 'unique', columns: ['id'] },
-    ],
-  }, FoodRatingRow),
   user: __table({
     name: 'user',
     indexes: [
@@ -91,6 +78,13 @@ const tablesSchema = __schema({
       { name: 'user_username_key', constraint: 'unique', columns: ['username'] },
     ],
   }, UserRow),
+  all_friend_ratings: __table({
+    name: 'all_friend_ratings',
+    indexes: [
+    ],
+    constraints: [
+    ],
+  }, AllFriendRatingsRow),
   all_pending_received_requests: __table({
     name: 'all_pending_received_requests',
     indexes: [
@@ -105,6 +99,13 @@ const tablesSchema = __schema({
     constraints: [
     ],
   }, AllPendingSentRequestsRow),
+  all_ratings: __table({
+    name: 'all_ratings',
+    indexes: [
+    ],
+    constraints: [
+    ],
+  }, AllRatingsRow),
   friend_list: __table({
     name: 'friend_list',
     indexes: [

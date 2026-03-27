@@ -15,7 +15,7 @@ import {
 
 
 export default __t.row({
-  id: __t.u64().primaryKey(),
+  id: __t.u64(),
   userId: __t.identity().name("user_id"),
   longitude: __t.f64(),
   latitude: __t.f64(),
